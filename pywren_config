@@ -1,0 +1,16 @@
+pywren: 
+    storage_bucket: bucketpausdgb
+
+ibm_cf:
+    endpoint    : https://eu-gb.functions.cloud.ibm.com  # make sure to use https:// as prefix
+    namespace   : pau.treig@estudiants.urv.cat_dev
+    api_key     : 15c8904b-b6eb-4968-bffa-5183f0b18441:8zw9pqkDdrlfW0T8ZMyKiQkwj0Cdt17UlZXwf0MhOODWcphR63Mbm2s9p01Br4YC
+   
+ibm_cos:
+    endpoint   : https://s3.eu-gb.cloud-object-storage.appdomain.cloud
+    access_key : a8c80092514746a9a36b194aadcc8287
+    secret_key : e131be2dae2f8b38d3dd6a3eb4cd894be2e397bd841834b4
+
+rabbitmq:
+    amqp_url : amqp://btxgpdpj:OfEG65i-2JJUZTQaPppg_vSHfw3Fxryg@caterpillar.rmq.cloudamqp.com/btxgpdpj
+
