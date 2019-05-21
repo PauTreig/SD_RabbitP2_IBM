@@ -22,16 +22,16 @@ def my_master_function(x):
 	while i<x+1:
 		channel.queue_declare(queue = str(i))
 		channel.basic_publish(exchange='',routing_key=str(i),body=str(x))
+		i=i+1
 		
 	while len(listrand) > 0:
-		index = randint(0, len(listrand) - 1)
+		index = randint(0, len(listrand)-1)
 		listActive = listrand.pop(index)
 		channel.queue_declare(queue = str(index+1))
 		channel.basic_publish(exchange='',routing_key=str(index+1),body='Active')
 		
 	channel.close()
 	connection.close()
-	return listrand
 			
 def my_map_function(x):
 	pywren_Conf =  json.loads(os.environ.get('PYWREN_CONFIG', ''))
@@ -41,18 +41,34 @@ def my_map_function(x):
 	channel = connection.channel()
 	channel.queue_declare(queue = str(x))
 	#codi enviar missatges
-	i=0
 	channel.basic_publish(exchange='',routing_key='master',body=str(x))
-	while i<1:
-		method_frame, header_frame, body = channel.basic_get(str(x))
+	i=1
+	while i<2:
+		method_frame, properties, body = channel.basic_get(str(x))
 		if body != None:
-			i+=1
-		else:
-			print('No message returned')
-
+			channel.basic_ack(method_frame.delivery_tag)
+			sizeMaps=int(body.decode('utf-8'))
+			i=i+1
+	i=1	
+	listrand=[]
+	while i<sizeMaps+2:
+		method_frame, properties, body = channel.basic_get(str(x))
+		if body != None:
+			i=i+1
+			channel.basic_ack(method_frame.delivery_tag)
+			if body.decode('utf-8') == 'Active':
+				j=1
+				rand=random.randint(0,1000)
+				while j<sizeMaps+1:
+					channel.queue_declare(queue = str(j))
+					channel.basic_publish(exchange='',routing_key=str(j),body=str(rand))
+					j=j+1
+			else:
+				listrand.append(int(body.decode('utf-8')))
+			
 	channel.close()
 	connection.close()
-	return int(body.decode('utf-8'))
+	return listrand
 
 if len(sys.argv)==2 :
 	nMaps=int(sys.argv[1])  #number of maps 
@@ -61,6 +77,6 @@ if len(sys.argv)==2 :
 	pw.call_async(my_master_function,nMaps)
 	pw2 = pywren.ibm_cf_executor(rabbitmq_monitor=True)
 	pw2.map(my_map_function, idlist)
-	print(pw.get_result())
+	print(pw2.get_result())
 else:
 	print('You have to pass the number of maps that you want to create')
