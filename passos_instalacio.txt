@@ -1,0 +1,13 @@
+#si no tens el pip 
+sudo apt-get install python3-pip
+#per ibmcloud
+sudo pip3 install awscli --upgrade --user
+sudo pip3 install pyyaml --upgrade
+sudo pip3 install boto3 --upgrade
+sudo pip3 install -U ibm-cos-sdk --upgrade --user
+#pluguin functions
+sudo ibmcloud plugin install cloud-functions
+sudo ibmcloud login -a cloud.ibm.com
+#pywren 
+sudo pip3 install pika
+sudo pip3 install pywren-ibm-cloud
