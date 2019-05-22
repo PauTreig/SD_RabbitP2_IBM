@@ -25,10 +25,10 @@ def my_master_function(x):
 		i=i+1
 		
 	while len(listrand) > 0:
-		index = randint(0, len(listrand)-1)
+		index = random.randint(0, len(listrand)-1)
 		listActive = listrand.pop(index)
-		channel.queue_declare(queue = str(index+1))
-		channel.basic_publish(exchange='',routing_key=str(index+1),body='Active')
+		channel.queue_declare(queue = str(listActive))
+		channel.basic_publish(exchange='',routing_key=str(listActive),body='Active')
 		
 	channel.close()
 	connection.close()
