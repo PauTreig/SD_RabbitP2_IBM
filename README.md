@@ -3,10 +3,10 @@ This is a repository the goal of which is to learn about RabbitMQ using Python.
 
 # Getting Started
 
-1. [How Does it Work?](#How)
-2. [Additional Files](#Additional)
+1. [How Does it Work?](#How-Does-it-Work?)
+2. [Additional Files](#Additional-Files)
 3. [Installation](#Installation)
-4. [Versioning of Python](#Versioning)
+4. [Versioning of Python](#Versioning-of-Python)
 5. [Authors](#Authors)
 
 ## How Does it Work?
