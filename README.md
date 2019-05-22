@@ -1,6 +1,14 @@
 # SD_RabbitP2_IBM
 This is a repository the goal of which is to learn about RabbitMQ using Python.
 
+# Getting Started
+
+1. [How Does it Work?](#How Does it Work?)
+2. [Additional Files](#Additional Files)
+3. [Installation](#Installation)
+4. [Versioning of Python](#Versioning of Python)
+5. [Authors](#Authors)
+
 ## How Does it Work?
 
 We only have to execute the file main with the number of maps that you want to spawn. Then inside the main file there are 2 functions, 
@@ -18,11 +26,25 @@ python3 __main__.py 10
 ## Additional Files
 
 You will need an additional file, named .pywren_config, situated in the home directori  ~/.pywren_config  or 
-/homedirectory/.pywren_config. The file have to be completed with your IBM information in order to load it from the pywren, the master 
-and maps. This will provide us authentication, confidentiality and security. You have an example of this file in this project, but you 
-have to complete it with your own credentials. You can edit it with vim, nano, gedit ... and then you will need to copy it.
+/homedirectory/.pywren_config. You can create it with `touch ~/.pywren_config` and the edit it with nano, gedit...
+The file has to be like the following example:
+
 ```
-cp -p .pywren_config ~/.pywren_config
+pywren: 
+    storage_bucket : <BUCKET NAME>
+
+rabbitmq:
+    amqp_url : <URL>
+
+ibm_cf:
+    endpoint    : <HOST>  # make sure to use https:// as prefix
+    namespace   : <NAMESPACE>
+    api_key     : <API_KEY>
+   
+ibm_cos:
+    endpoint   : <REGION_ENDPOINT>  # make sure to use https:// as prefix
+    access_key : <ACCESS_KEY>
+    secret_key : <SECRET_KEY>
 ```
 
 ## Installation
