@@ -9,7 +9,7 @@ def my_master_function(x):
 	params = pika.URLParameters(url)
 	connection = pika.BlockingConnection(params)
 	channel = connection.channel()
-	channel.queue_declare(queue = 'master')
+	channel.queue_declare(queue='master')
 	listrand = []
 	i=1
 	while i<x+1:
@@ -20,16 +20,16 @@ def my_master_function(x):
 			i=i+1	
 	i=1
 	while i<x+1:
-		channel.queue_declare(queue = str(i))
+		channel.queue_declare(queue=str(i))
 		channel.basic_publish(exchange='',routing_key=str(i),body=str(x))
 		i=i+1
 		
 	while len(listrand) > 0:
 		index = random.randint(0, len(listrand)-1)
 		listActive = listrand.pop(index)
-		channel.queue_declare(queue = str(listActive))
+		channel.queue_declare(queue=str(listActive))
 		channel.basic_publish(exchange='',routing_key=str(listActive),body='Active')
-		
+	channel.queue_delete(queue='master')
 	channel.close()
 	connection.close()
 			
@@ -39,8 +39,9 @@ def my_map_function(x):
 	params = pika.URLParameters(url)
 	connection = pika.BlockingConnection(params)
 	channel = connection.channel()
-	channel.queue_declare(queue = str(x))
+	channel.queue_declare(queue=str(x))
 	#codi enviar missatges
+	channel.queue_declare(queue='master')
 	channel.basic_publish(exchange='',routing_key='master',body=str(x))
 	i=1
 	while i<2:
@@ -60,12 +61,12 @@ def my_map_function(x):
 				j=1
 				rand=random.randint(0,1000)
 				while j<sizeMaps+1:
-					channel.queue_declare(queue = str(j))
+					channel.queue_declare(queue=str(j))
 					channel.basic_publish(exchange='',routing_key=str(j),body=str(rand))
 					j=j+1
 			else:
 				listrand.append(int(body.decode('utf-8')))
-			
+	channel.queue_delete(queue=str(x))	
 	channel.close()
 	connection.close()
 	return listrand
@@ -77,6 +78,12 @@ if len(sys.argv)==2 :
 	pw.call_async(my_master_function,nMaps)
 	pw2 = pywren.ibm_cf_executor(rabbitmq_monitor=True)
 	pw2.map(my_map_function, idlist)
+	#There are 2 queues (master and slave) that stay undeleted. If you want to eliminate descoment the pw2.monitor() and the pw.monitor() but it
+	#can block the connection
+		#pw2.monitor()
+		#pw.monitor()
 	print(pw2.get_result())
+	pw.clean()
+	pw2.clean()
 else:
 	print('You have to pass the number of maps that you want to create')
