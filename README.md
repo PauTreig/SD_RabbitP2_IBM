@@ -3,13 +3,13 @@ This is a repository the goal of which is to learn about RabbitMQ using Python.
 
 # Getting Started
 
-1. [How Does it Work?](#How-Does-it-Work?)
+1. [How it Works](#How-it-Works)
 2. [Additional Files](#Additional-Files)
 3. [Installation](#Installation)
 4. [Versioning of Python](#Versioning-of-Python)
 5. [Authors](#Authors)
 
-## How Does it Work?
+## How it Works
 
 We only have to execute the file main with the number of maps that you want to spawn. Then inside the main file there are 2 functions, 
 master and map. The master function will be executed asyncronous and will receive the number of maps in order to wait them. Meanwhile, the 
